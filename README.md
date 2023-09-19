@@ -1,1 +1,1 @@
-# imager
+image-uploader
