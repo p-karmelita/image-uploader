@@ -1,5 +1,4 @@
 Django
 djangorestframework
 psycopg2
-python-dotenv
-Pillow
+drf-spectacular
