@@ -1,12 +1,24 @@
 """
 Database models.
 """
+import os
+
+import uuid
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
     PermissionsMixin
 )
+
+
+def image_file_path(instance, filename):
+    """Generate file path for new user image."""
+    ext = os.path.splitext(filename)[1]
+    filename = f'{uuid.uuid4()}{ext}'
+
+    return os.path.join('uploads', 'user', filename)
 
 
 class UserManager(BaseUserManager):
@@ -53,3 +65,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Image(models.Model):
+    """Image object."""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    image = models.ImageField(null=True, upload_to=image_file_path)
